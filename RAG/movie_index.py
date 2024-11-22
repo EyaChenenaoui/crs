@@ -22,7 +22,6 @@ def create_full_movie_vector_db(item_map: Dict[str, str], save_path: str) -> Non
     embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
     vector_db = FAISS.from_texts(movie_texts, embeddings, metadatas=metadata_list)
 
-    # Save the FAISS database
     vector_db.save_local(save_path)
 if __name__=='__main__':
     load_dotenv()

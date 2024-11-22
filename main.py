@@ -37,21 +37,26 @@ def validate_request(user_request: UserRequest) -> None:
 
 app = FastAPI()
 
-
 @app.post("/recommend/")
 async def recommend_movies(user_request: UserRequest) -> dict:
     """
     Recommends movies using the specified method.
     """
-    
-    validate_request(user_request)
-    user_id = user_request.user_id
-    query = user_request.query
-    method = user_request.method.lower()
+    try:
+        # Validate user request
+        validate_request(user_request)
+        user_id = user_request.user_id
+        query = user_request.query
+        method = user_request.method.lower()
 
-    if method == "rag":
-        response = await rag_generate_response(query, user_id)
-    else:
-        response = await few_shot_generate_response(query, user_id)
+        if method == "rag":
+            response = await rag_generate_response(query, user_id)
+        else:
+            response = await few_shot_generate_response(query, user_id)
 
-    return {"response": response}
+        return {"response": response}
+
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")

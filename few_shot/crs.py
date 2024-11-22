@@ -10,10 +10,13 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(PROJECT_ROOT)
 
 from Utils.Tools import read_dialogue,user_info_details
+
 final_data_path = os.path.join(PROJECT_ROOT, "Movie", "final_data.jsonl")
 Conversation_path = os.path.join(PROJECT_ROOT, "Movie", "Conversation.txt")
 chat_groq_model = None
-async def init_resources():
+
+
+async def init_resources()->None:
     """
     Initialize and cache global resources
     """
